@@ -1,10 +1,20 @@
 const taskCount = document.getElementById("taskCount");
 const taskInput = document.getElementById("taskInput");
 const submitBtn = document.querySelector(".submit-btn");
+const emptyState = document.getElementById("emptyState");
+const taskList = document.getElementById("taskList");
 
 const tasks = [];
 
 submitBtn.addEventListener("click", function (event) {
+  const updateTask = function () {
+    if (taskList.children.length === 0) {
+      emptyState.style.display = "block";
+    } else {
+      emptyState.style.display = "none";
+    }
+  };
+
   // preventing the default behavior of the form submission
   event.preventDefault();
 
@@ -15,8 +25,9 @@ submitBtn.addEventListener("click", function (event) {
     // changing the HTML elements for added tasks-//;;ll
     const listedTask = document.createElement("div");
     listedTask.classList.add("task-item");
-    const taskList = document.getElementById("taskList");
+
     taskList.appendChild(listedTask);
+    updateTask();
 
     // adding the task to the tasks div
     const taskText = document.createElement("p");
@@ -33,11 +44,12 @@ submitBtn.addEventListener("click", function (event) {
     deleteBtn.addEventListener("click", function () {
       taskList.removeChild(listedTask);
       taskCount.textContent = Number(taskCount.textContent) - 1;
+      updateTask();
     });
 
     // clearing the input field after adding the task
     taskInput.value = "";
   } else {
-    console.log("no input is given");
+    errorMessage.style.display = "block";
   }
 });
